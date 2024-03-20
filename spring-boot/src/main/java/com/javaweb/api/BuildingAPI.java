@@ -30,13 +30,6 @@ public class BuildingAPI {
 		return result;
 	}
 	
-//	public void validateData(BuildingDTO buildingDTO) {
-//		if (buildingDTO.getName()== null 
-//		    || buildingDTO.getName().equals("") || buildingDTO.getDistrictId() == null) {
-//			throw new FieldRequiredException("Name or DistricId is null");
-//		}
-//	}
-	
 	@PostMapping(value = "/api/building")
 	public Object createBuilding(@RequestBody BuildingDTO buildingDTO) {
 		validateData(buildingDTO);
