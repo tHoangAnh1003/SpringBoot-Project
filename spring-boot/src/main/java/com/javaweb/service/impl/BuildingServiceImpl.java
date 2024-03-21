@@ -18,8 +18,7 @@ public class BuildingServiceImpl implements BuildingService{
 	@Autowired
 	private BuildingRepository buildingRepository;
 	
-	@Override
-	public List<BuildingDTO> findAll(Map<Object, Object> ob, String[] typeCode) {
+	public List<BuildingDTO> findAll(Map<Object, Object> ob, List<String> typeCode) {
 		List<BuildingEntity> buildEntities = buildingRepository.findAll(ob, typeCode); 
 		List<BuildingDTO> result = new ArrayList<>();
 		
@@ -36,6 +35,7 @@ public class BuildingServiceImpl implements BuildingService{
 			building.setBrokerageFee(item.getBrokerageFee());
 			building.setVacantArea(item.getVacantArea());
 			building.setRentArea(item.getRentArea());
+			
 			result.add(building);
 		}
 		

@@ -16,20 +16,20 @@ import com.javaweb.untils.ConnectionUtil;
 @Repository
 public class BuildingRepositoryImpl implements BuildingRepository{
 	
-	@Override
-	public List<BuildingEntity> findAll(Map<Object, Object> ob, String[] typeCode) {
-		StringBuilder sql = new StringBuilder("SELECT * FROM Building ");
+	public List<BuildingEntity> findAll(Map<Object, Object> ob, List<String> typeCode) {
+		StringBuilder sql = new StringBuilder("SELECT distinct building.*, rentarea.value FROM Building ");
 		
-		sql.append(" left join rentarea on building.id = rentarea.buildingid");
+		sql.append(" join rentarea on building.id = rentarea.buildingid");
 		
-		sql.append(" left join renttype on renttype.id = rentarea.id");
+		sql.append(" left join buildingrenttype on buildingrenttype.buildingid = building.id");
+		sql.append(" left join renttype on renttype.id = buildingrenttype.renttypeid");
 		
 		if (ob.get("staffid") != null) {
 			sql.append(" left join assignmentbuilding on assignmentbuilding.buildingid = building.id");
 		}
 		
 		if (ob.get("district") != null && !ob.get("district").equals("")) {
-			sql.append(" join district on district.id = building.districtid");
+			sql.append(" left join district on district.id = building.districtid");
 		}
 		
 		StringBuilder where = new StringBuilder(" where 1 = 1 ");
@@ -98,8 +98,28 @@ public class BuildingRepositoryImpl implements BuildingRepository{
 			where.append(" AND assignmentbuilding.staffid = " + ob.get("staffid"));
 		}
 		
-		if (ob.get("typeCode") != null) {
-			where.append(" and renttype.code like '%" + ob.get("typeCode") + "%'");
+		if (typeCode.contains("tang-tret")) {
+			where.append(" AND ( renttype.code like '%tang-tret%'");
+			
+			if (typeCode.contains("noi-that")) {
+				where.append(" OR renttype.code like '%noi-that%'");
+			}
+			
+			if (typeCode.contains("nguyen-can")) {
+				where.append(" OR renttype.code like '%nguyen-can%'");
+			}
+			
+			where.append(" )");
+		} else if(typeCode.contains("nguyen-can")) {
+			where.append(" AND ( renttype.code like '%nguyen-can%'");
+
+			if (ob.get("noi-that") != null) {
+				where.append(" OR renttype.code like '%noi-that%'");
+			}
+			
+			where.append(")");
+		}else {
+			where.append(" AND renttype.code like '%noi-that%'");
 		}
 		
 		String Where = where.toString();
@@ -141,20 +161,20 @@ public class BuildingRepositoryImpl implements BuildingRepository{
 					result.add(nowBuilding);
 					nowBuilding = building;
 				} else if (nowBuilding.getRentArea() != building.getRentArea()) {
-						StringBuilder rent = new StringBuilder(nowBuilding.getRentArea());
-						rent.append(",");
-						rent.append(building.getRentArea());
-						nowBuilding.setRentArea(rent.toString());
+					StringBuilder rent = new StringBuilder(nowBuilding.getRentArea());
+					rent.append(", ");
+					rent.append(building.getRentArea());
+					nowBuilding.setRentArea(rent.toString());
 				}
 			}
-
+			
 			result.add(nowBuilding);
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("Connected database failed...");
 		}
-
+		
 		return result;
 	}
 

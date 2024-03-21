@@ -25,8 +25,9 @@ public class BuildingAPI {
 	@GetMapping(value = "/api/building")
 	@ResponseBody
 	public List<BuildingDTO> findBuilding(@RequestParam Map<Object, Object> ob,
-			@RequestParam(value="typeCode", required = false) String[] typeCode) {
+			@RequestParam(value="typeCode", required = false) List<String> typeCode) {
 		List<BuildingDTO> result = buildingService.findAll(ob, typeCode);
+		
 		return result;
 	}
 	
