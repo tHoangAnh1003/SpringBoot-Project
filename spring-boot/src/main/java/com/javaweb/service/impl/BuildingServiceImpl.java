@@ -13,7 +13,7 @@ import com.javaweb.DTO.BuildingDTO;
 import com.javaweb.reponsitory.BuildingRepository;
 
 @Service
-public class BuildingServiceImpl implements BuildingService{
+public class BuildingServiceImpl implements BuildingService {
 
 	@Autowired
 	private BuildingRepository buildingRepository;

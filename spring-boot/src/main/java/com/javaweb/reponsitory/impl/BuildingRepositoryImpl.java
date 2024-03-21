@@ -14,7 +14,7 @@ import com.javaweb.reponsitory.entity.BuildingEntity;
 import com.javaweb.untils.ConnectionUtil;
 
 @Repository
-public class BuildingRepositoryImpl implements BuildingRepository{
+public class BuildingRepositoryImpl implements BuildingRepository {
 	
 	public List<BuildingEntity> findAll(Map<Object, Object> ob, List<String> typeCode) {
 		StringBuilder sql = new StringBuilder("SELECT distinct building.*, rentarea.value FROM Building ");
@@ -110,7 +110,7 @@ public class BuildingRepositoryImpl implements BuildingRepository{
 			}
 			
 			where.append(" )");
-		} else if(typeCode.contains("nguyen-can")) {
+		} else if (typeCode.contains("nguyen-can")) {
 			where.append(" AND ( renttype.code like '%nguyen-can%'");
 
 			if (ob.get("noi-that") != null) {
@@ -118,7 +118,7 @@ public class BuildingRepositoryImpl implements BuildingRepository{
 			}
 			
 			where.append(")");
-		}else {
+		} else {
 			where.append(" AND renttype.code like '%noi-that%'");
 		}
 		
