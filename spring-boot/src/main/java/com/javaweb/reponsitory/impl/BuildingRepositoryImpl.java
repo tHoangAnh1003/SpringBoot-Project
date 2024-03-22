@@ -17,19 +17,13 @@ import com.javaweb.untils.ConnectionUtil;
 public class BuildingRepositoryImpl implements BuildingRepository {
 	
 	public List<BuildingEntity> findAll(Map<Object, Object> ob, List<String> typeCode) {
-		StringBuilder sql = new StringBuilder("SELECT distinct building.*, rentarea.value FROM Building ");
+		StringBuilder sql = new StringBuilder("SELECT distinct building.*, rentarea.value, district.name FROM Building ");
 		
 		sql.append(" join rentarea on building.id = rentarea.buildingid");
-		
-		sql.append(" left join buildingrenttype on buildingrenttype.buildingid = building.id");
-		sql.append(" left join renttype on renttype.id = buildingrenttype.renttypeid");
-		
+		sql.append(" join district on district.id = building.districtid");
+
 		if (ob.get("staffid") != null) {
-			sql.append(" left join assignmentbuilding on assignmentbuilding.buildingid = building.id");
-		}
-		
-		if (ob.get("district") != null && !ob.get("district").equals("")) {
-			sql.append(" left join district on district.id = building.districtid");
+			sql.append(" join assignmentbuilding on assignmentbuilding.buildingid = building.id");
 		}
 		
 		StringBuilder where = new StringBuilder(" where 1 = 1 ");
@@ -75,7 +69,7 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 		}
 		
 		if (ob.get("district") != null && !ob.get("district").equals("")) {
-			where .append(" AND district.code like '%" + ob.get("district") + "%'");
+			where.append(" AND district.code like '%" + ob.get("district") + "%'");
 		}
 
 		if (ob.get("managerphonenumber") != null && !ob.get("managerphonenumber").equals("")) {
@@ -98,28 +92,26 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 			where.append(" AND assignmentbuilding.staffid = " + ob.get("staffid"));
 		}
 		
-		if (typeCode.contains("tang-tret")) {
-			where.append(" AND ( renttype.code like '%tang-tret%'");
+		
+		if (ob.get("typeCode") != null && !ob.get("typeCode").equals("")) {
+			sql.append(" left join buildingrenttype on buildingrenttype.buildingid = building.id");
+			sql.append(" left join renttype on renttype.id = buildingrenttype.renttypeid");
 			
-			if (typeCode.contains("noi-that")) {
-				where.append(" OR renttype.code like '%noi-that%'");
+			int i = 0;
+			
+			where.append(" AND ( ");
+			
+			for (String type : typeCode) {
+				if (i == 0) {
+					where.append(" renttype.code like '" + type + "' ");
+				} else {
+					where.append(" OR renttype.code like '" + type + "' ");
+				}
+				i += 1;	
 			}
 			
-			if (typeCode.contains("nguyen-can")) {
-				where.append(" OR renttype.code like '%nguyen-can%'");
-			}
-			
-			where.append(" )");
-		} else if (typeCode.contains("nguyen-can")) {
-			where.append(" AND ( renttype.code like '%nguyen-can%'");
+			where.append(" ) ");
 
-			if (ob.get("noi-that") != null) {
-				where.append(" OR renttype.code like '%noi-that%'");
-			}
-			
-			where.append(")");
-		} else {
-			where.append(" AND renttype.code like '%noi-that%'");
 		}
 		
 		String Where = where.toString();
@@ -139,7 +131,7 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 			while (rs.next()) {
 				BuildingEntity building = new BuildingEntity();
 				building.setName(rs.getString("name"));
-				building.setDistrictId(rs.getLong("districtid"));
+				building.setDistrict(rs.getString("district.name"));
 				building.setStreet(rs.getString("street"));
 				building.setWard(rs.getString("ward"));
 				building.setManagerName(rs.getString("managername"));
