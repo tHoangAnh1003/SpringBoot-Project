@@ -19,7 +19,7 @@ public class BuildingServiceImpl implements BuildingService {
 	private BuildingRepository buildingRepository;
 	
 	public List<BuildingDTO> findAll(Map<Object, Object> ob, List<String> typeCode) {
-		List<BuildingEntity> buildEntities = buildingRepository.findAll(ob, typeCode); 
+		List<BuildingEntity> buildEntities = buildingRepository.findAll(ob, typeCode);
 		List<BuildingDTO> result = new ArrayList<>();
 		
 		for (BuildingEntity item : buildEntities) {

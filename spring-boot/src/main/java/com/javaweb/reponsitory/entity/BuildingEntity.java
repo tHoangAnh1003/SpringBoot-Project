@@ -1,10 +1,12 @@
 package com.javaweb.reponsitory.entity;
 
 public class BuildingEntity {
+	private Long id;
 	private String name;
 	private String ward;
 	private String street;
 	private String district;
+	private String districtId;
 	private Long numberOfBasement;
 	private String managerName;
 	private String managerPhoneNumber;
@@ -15,6 +17,23 @@ public class BuildingEntity {
 	private Long vacantArea;
 	private String rentArea;
 
+	
+	
+	public String getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public String getRentArea() {
 		return rentArea;
@@ -88,12 +107,12 @@ public class BuildingEntity {
 		this.street = street;
 	}
 
-	public String getDistrict() {
-		return district;
+	public String getDistrictId() {
+		return districtId;
 	}
 
-	public void setDistrict(String district) {
-		this.district = district;
+	public void setDistrictId(String districtId) {
+		this.districtId = districtId;
 	}
 
 	public Long getNumberOfBasement() {

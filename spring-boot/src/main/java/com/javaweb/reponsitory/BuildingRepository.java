@@ -9,4 +9,8 @@ public interface BuildingRepository {
 	void delete(Long[] ids);
 
 	List<BuildingEntity> findAll(Map<Object, Object> ob, List<String> typeCode);
+	
+	String findDistrict(String districtId);
+	
+	String findRent(Long id);
 }
