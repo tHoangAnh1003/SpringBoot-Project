@@ -31,6 +31,8 @@ public class BuildingAPI {
 		return result;
 	}
 	
+	
+	
 	@PostMapping(value = "/api/building")
 	public Object createBuilding(@RequestBody BuildingDTO buildingDTO) {
 		validateData(buildingDTO);

@@ -46,12 +46,17 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 			where.append(" AND level like " + ob.get("level"));
 		}
 		
-		if (ob.get("areafrom") != null) {
-			where.append(" AND rentarea.value >= " + ob.get("areafrom"));
-		}
-		
-		if (ob.get("areato") != null) {
-			where.append(" AND rentarea.value <= " + ob.get("areato"));
+		if (ob.get("areafrom") != null || ob.get("areato") != null) {
+			
+			sql.append(" join rentarea on rentarea.buildingid = building.id ");
+			
+			if (ob.get("areafrom") != null) {
+				where.append(" AND rentarea.value >= " + ob.get("areafrom"));
+			}
+			
+			if (ob.get("areato") != null) {
+				where.append(" AND rentarea.value <= " + ob.get("areato"));
+			}
 		}
 		
 		if (ob.get("pricefrom") != null) {
@@ -125,7 +130,7 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 			while (rs.next()) {
 				BuildingEntity building = new BuildingEntity();;
 				building.setName(rs.getString("name"));
-				building.setDistrict(findDistrict(rs.getString("districtid")));
+				building.setDistrictId(rs.getString("districtid"));
 				building.setStreet(rs.getString("street"));
 				building.setWard(rs.getString("ward"));
 				building.setManagerName(rs.getString("managername"));
@@ -136,7 +141,7 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 				building.setServiceFee(rs.getLong("servicefee"));
 				building.setBrokerageFee(rs.getLong("brokeragefee"));
 				building.setVacantArea(0L);
-				building.setRentArea(findRent(rs.getLong("id")));
+				building.setId(rs.getLong("id"));
 		
 				result.add(building);
 			}
@@ -154,61 +159,6 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 	public void delete(Long[] ids) {
 		// TODO Auto-generated method stub
 		
-	}
-
-	@Override
-	public String findDistrict(String districtId) {
-		
-		StringBuilder SQL = new StringBuilder("SELECT * from district ");
-		
-		SQL.append("where id like '%" + districtId + "%'");
-		
-		String result = "";
-		
-		try(Connection conn = ConnectionUtil.getConnection();
-			Statement stm = conn.createStatement();
-			ResultSet rs = stm.executeQuery(SQL.toString())){
-			
-			if(rs.next()) {
-				result = rs.getString("name");
-			} 
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.println("Connected database failed...");
-		}
-		
-		
-		return result;
-	}
-
-	@Override
-	public String findRent(Long id) {
-		StringBuilder SQL = new StringBuilder("SELECT * from rentarea ");
-		
-		SQL.append("where buildingid = " + id);
-		
-		StringBuilder rentValue = new StringBuilder();
-		
-		try(Connection conn = ConnectionUtil.getConnection();
-			Statement stm = conn.createStatement();
-			ResultSet rs = stm.executeQuery(SQL.toString())){
-			
-			while (rs.next()) {
-				rentValue.append(rs.getString("value"));
-				rentValue.append(", ");
-			}
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.println("Connected database failed...");
-		}
-		
-		int length = rentValue.length();
-		
-		rentValue.delete(length - 2, length);
-		
-		return rentValue.toString();
 	}
 	
 }
