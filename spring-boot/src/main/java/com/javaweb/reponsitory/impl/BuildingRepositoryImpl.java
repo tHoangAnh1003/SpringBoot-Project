@@ -121,8 +121,6 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 		try(Connection conn = ConnectionUtil.getConnection();
 			Statement stm = conn.createStatement();
 			ResultSet rs = stm.executeQuery(sql.toString())){
-//			
-			BuildingEntity nowBuilding = new BuildingEntity();
 			
 			while (rs.next()) {
 				BuildingEntity building = new BuildingEntity();;
@@ -165,15 +163,15 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 		
 		SQL.append("where id like '%" + districtId + "%'");
 		
+		String result = "";
+		
 		try(Connection conn = ConnectionUtil.getConnection();
 			Statement stm = conn.createStatement();
 			ResultSet rs = stm.executeQuery(SQL.toString())){
 			
 			if(rs.next()) {
-				return rs.getString("name");
-			} else {
-				return "";
-			}
+				result = rs.getString("name");
+			} 
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -181,8 +179,7 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 		}
 		
 		
-		
-		return "";
+		return result;
 	}
 
 	@Override
