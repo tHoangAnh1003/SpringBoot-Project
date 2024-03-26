@@ -46,14 +46,12 @@ public class BuildingServiceImpl implements BuildingService {
 			building.setVacantArea(item.getVacantArea());
 			
 			List<RentEntity> rent = rentRepository.findRent(item.getId());
-			StringBuilder rentVal = new StringBuilder();
+			List<String> rentVal = new ArrayList<>();
 			for (RentEntity index : rent) {
-				rentVal.append(index.getRentArea());
-				rentVal.append(", ");
+				rentVal.add(index.getRentArea());
 			}
-			int length = rentVal.length();
-			rentVal.delete(length - 2, length);
-			building.setRentArea(rentVal.toString());
+			String rentValue = String.join(",", rentVal);
+			building.setRentArea(rentValue);
 			
 			result.add(building);
 		}

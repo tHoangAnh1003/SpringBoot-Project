@@ -86,17 +86,13 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 		if (ob.get("direction") != null && !ob.get("direction").equals("")) {
 			where.append(" AND direction like '%" + ob.get("direction") + "%'");
 		}
-		
-		if (ob.get("value") != null) {
-			where.append(" AND value = " + ob.get("value"));
-		}
 
 		if (ob.get("staffid") != null) {
 			where.append(" AND assignmentbuilding.staffid = " + ob.get("staffid"));
 		}
 		
 		
-		if (ob.get("typeCode") != null && !ob.get("typeCode").equals("")) {
+		if (typeCode != null) {
 			sql.append(" left join buildingrenttype on buildingrenttype.buildingid = building.id");
 			sql.append(" left join renttype on renttype.id = buildingrenttype.renttypeid");
 			
