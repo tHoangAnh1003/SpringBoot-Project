@@ -28,7 +28,7 @@ public class BuildingSearchBuilder {
 		this.numberOfBasement = builder.numberOfBasement;
 		this.typeCode = builder.typeCode;
 		this.managerName = builder.managerName;
-		this.managerName = builder.managerPhoneNumber;
+		this.managerPhoneNumber = builder.managerPhoneNumber;
 		this.rentPriceFrom = builder.rentPriceFrom;
 		this.rentPriceTo = builder.rentPriceTo;
 		this.areaFrom = builder.areaFrom;

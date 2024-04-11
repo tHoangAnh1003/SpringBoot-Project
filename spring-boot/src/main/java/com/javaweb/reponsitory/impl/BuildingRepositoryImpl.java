@@ -15,7 +15,6 @@ import com.javaweb.builder.BuildingSearchBuilder;
 import com.javaweb.reponsitory.BuildingRepository;
 import com.javaweb.reponsitory.entity.BuildingEntity;
 import com.javaweb.untils.ConnectionUtil;
-import com.javaweb.untils.StringUtils;
 
 @Repository
 public class BuildingRepositoryImpl implements BuildingRepository {
@@ -76,7 +75,7 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 		
 		if (rentAreaFrom != null && rentAreaTo != null) {
 			
-			where.append(" AND EXISIS (SELECT * FROM rentarea r WHERE r.buildingid = b.id ");
+			where.append(" AND EXISTS (SELECT * FROM rentarea r WHERE r.buildingid = b.id ");
 			
 			if (rentAreaFrom != null) {
 				where.append(" AND rn.value >= " + rentAreaFrom);
@@ -118,7 +117,7 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 		queryWhereSpecial(builder, where);
 		sql.append(where);
 		sql.append(" GROUP BY b.id ");
-	
+		
 		List<BuildingEntity> result = new ArrayList<BuildingEntity>();
 		
 		try(Connection conn = ConnectionUtil.getConnection();
