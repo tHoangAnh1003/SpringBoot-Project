@@ -14,10 +14,6 @@ import com.javaweb.builder.BuildingSearchBuilder;
 import com.javaweb.converter.BuildingConverter;
 import com.javaweb.converter.BuildingSearchBuilderConverter;
 import com.javaweb.reponsitory.BuildingRepository;
-import com.javaweb.reponsitory.DistrictRepository;
-import com.javaweb.reponsitory.RentRepository;
-import com.javaweb.reponsitory.entity.DistrictEntity;
-import com.javaweb.reponsitory.entity.RentEntity;
 
 @Service
 public class BuildingServiceImpl implements BuildingService {

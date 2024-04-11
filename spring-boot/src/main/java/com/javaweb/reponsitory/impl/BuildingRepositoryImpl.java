@@ -24,19 +24,19 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 		Long rentAreaFrom = builder.getRentPriceFrom();
 		Long rentAreaTo = builder.getRentPriceTo();
 		if (rentAreaFrom != null || rentAreaTo != null) {
-			sql.append(" join rentarea rn on rn.buildingid = b.id ");
+			sql.append(" JOIN rentarea rn ON rn.buildingid = b.id ");
 		}
 		
 		Long staffId = builder.getStaffId();
 		
 		if (staffId != null) {
-			sql.append(" join assignmentbuilding asm on asm.buildingid = b.id ");
+			sql.append(" JOIN assignmentbuilding asm ON asm.buildingid = b.id ");
 		}
 		
 		List<String> typeCode = builder.getTypeCode();
 		if (typeCode != null && !typeCode.isEmpty()) {
-			sql.append(" left join buildingrenttype bdt on bdt.buildingid = b.id");
-			sql.append(" left join renttype rt on rt.id = bdt.renttypeid");
+			sql.append(" JOIN buildingrenttype bdt ON bdt.buildingid = b.id");
+			sql.append(" JOIN renttype rt ON rt.id = bdt.renttypeid");
 		}
 	}
 	
@@ -49,13 +49,13 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 				if (!fieldName.equals("staffId") && !fieldName.equals("typeCode") 
 						&& !fieldName.startsWith("area") && !fieldName.startsWith("rentPrice")) {
 					Object value = items.get(builder);
-					if (StringUtils.checkString((String)value)) {
+					if (value != null) {
 						if (items.getType().getName().equals("java.lang.Long")) {
 							where.append(" AND b." + fieldName.toLowerCase() + " = " + value);
 						} else if (items.getType().getName().equals("java.lang.Integer")) {
 							where.append(" AND b." + fieldName.toLowerCase() + " = " + value);
 						} else if (items.getType().getName().equals("java.lang.String")) {
-							where.append(" AND b." + fieldName.toLowerCase() + " like '%" + value + "%'");
+							where.append(" AND b." + fieldName.toLowerCase() + " LIKE '%" + value + "%'");
 						}
 					}
 				}
@@ -101,22 +101,24 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 		
 		if (typeCode != null && !typeCode.isEmpty()) {
 			where.append(" AND ( ");
-			String sqlJoin = typeCode.stream().map(item -> " rt.code Like '%" + item + "%'")
+			String sqlJoin = typeCode.stream().map(item -> " rt.code LIKE '%" + item + "%'")
 					.collect(Collectors.joining(" OR "));
 			where.append(sqlJoin + " ) ");
 		}
 	}
 	
 	public List<BuildingEntity> findAll(BuildingSearchBuilder builder) {
-		StringBuilder sql = new StringBuilder("SELECT * FROM Building b ");
+		StringBuilder sql = new StringBuilder("SELECT b.id, b.name, b.districtid, b.street, b.ward, "
+				+ "b.numberofbasement, b.managername, b.managerphonenumber, "
+				+ "b.floorarea, b.rentprice, b.brokeragefee, b.servicefee FROM Building b ");
 		
 		queryJoin(builder, sql);
-		StringBuilder where = new StringBuilder(" where 1 = 1 ");
+		StringBuilder where = new StringBuilder(" WHERE 1 = 1 ");
 		queryWhereNormal(builder, where);
 		queryWhereSpecial(builder, where);
 		sql.append(where);
-		sql.append(" Group by b.id ");
-		
+		sql.append(" GROUP BY b.id ");
+	
 		List<BuildingEntity> result = new ArrayList<BuildingEntity>();
 		
 		try(Connection conn = ConnectionUtil.getConnection();
@@ -133,7 +135,7 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 				building.setNumberOfBasement(rs.getLong("numberofbasement"));
 				building.setManagerPhoneNumber(rs.getString("managerphonenumber"));
 				building.setFloorArea(rs.getLong("floorarea"));
-				building.setRentPrice(rs.getString("rentpricedescription"));
+				building.setRentPrice(rs.getString("rentprice"));
 				building.setServiceFee(rs.getLong("servicefee"));
 				building.setBrokerageFee(rs.getLong("brokeragefee"));
 				building.setVacantArea(0L);

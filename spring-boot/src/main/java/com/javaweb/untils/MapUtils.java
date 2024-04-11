@@ -13,8 +13,9 @@ public class MapUtils {
 				obj = (obj != "") ? Integer.valueOf(obj.toString()) : null;  
 			} 
 			else if (tClass.getTypeName().equals("java.lang.String")) {
-				obj = obj.toString();
+				obj = (obj != "") ? obj.toString() : null;
 			} 
+			return tClass.cast(obj);
 		}
 		return null;
 	}
