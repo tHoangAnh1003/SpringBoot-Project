@@ -1,121 +1,121 @@
 package com.javaweb.reponsitory.impl;
 
+import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
+
+import com.javaweb.builder.BuildingSearchBuilder;
 import com.javaweb.reponsitory.BuildingRepository;
 import com.javaweb.reponsitory.entity.BuildingEntity;
 import com.javaweb.untils.ConnectionUtil;
+import com.javaweb.untils.StringUtils;
 
 @Repository
 public class BuildingRepositoryImpl implements BuildingRepository {
 	
-	public List<BuildingEntity> findAll(Map<Object, Object> ob, List<String> typeCode) {
-		StringBuilder sql = new StringBuilder("SELECT * FROM Building ");
-		
-
-		if (ob.get("staffid") != null) {
-			sql.append(" join assignmentbuilding on assignmentbuilding.buildingid = building.id");
+	public void queryJoin(BuildingSearchBuilder builder, StringBuilder sql) {
+		Long rentAreaFrom = builder.getRentPriceFrom();
+		Long rentAreaTo = builder.getRentPriceTo();
+		if (rentAreaFrom != null || rentAreaTo != null) {
+			sql.append(" join rentarea rn on rn.buildingid = b.id ");
 		}
 		
-		StringBuilder where = new StringBuilder(" where 1 = 1 ");
-
-		if (ob.get("name") != null && !ob.get("name").equals("")) {
-			where.append(" AND name LIKE '%" + ob.get("name") + "%' ");
+		Long staffId = builder.getStaffId();
+		
+		if (staffId != null) {
+			sql.append(" join assignmentbuilding asm on asm.buildingid = b.id ");
 		}
 		
-		if (ob.get("floorarea") != null) {
-			where.append(" AND floorarea = " + ob.get("floorarea"));
+		List<String> typeCode = builder.getTypeCode();
+		if (typeCode != null && !typeCode.isEmpty()) {
+			sql.append(" left join buildingrenttype bdt on bdt.buildingid = b.id");
+			sql.append(" left join renttype rt on rt.id = bdt.renttypeid");
 		}
-		
-		if (ob.get("ward") != null && !ob.get("ward").equals("")) {
-			where.append(" AND ward like '%" + ob.get("ward") + "%' ");
-		}
-		
-		if (ob.get("street") != null && !ob.get("street").equals("")) {
-			where.append(" AND street like '%" + ob.get("street") + "%'");
-		}
-		
-		if (ob.get("level") != null && !ob.get("level").equals("")) {
-			where.append(" AND level like " + ob.get("level"));
-		}
-		
-		if (ob.get("areafrom") != null || ob.get("areato") != null) {
-			
-			sql.append(" join rentarea on rentarea.buildingid = building.id ");
-			
-			if (ob.get("areafrom") != null) {
-				where.append(" AND rentarea.value >= " + ob.get("areafrom"));
-			}
-			
-			if (ob.get("areato") != null) {
-				where.append(" AND rentarea.value <= " + ob.get("areato"));
-			}
-		}
-		
-		if (ob.get("pricefrom") != null) {
-			where.append(" AND rentprice >= " + ob.get("pricefrom"));
-		}
-		
-		if (ob.get("priceto") != null) {
-			where.append(" AND rentprice <= " + ob.get("priceto"));
-		}
-
-		if (ob.get("managername") != null && !ob.get("managername").equals("")) {
-			where.append(" AND managername like '%" + ob.get("managername") + "%'");
-		}
-		
-		if (ob.get("district") != null && !ob.get("district").equals("")) {
-			where.append(" AND district.code like '%" + ob.get("district") + "%'");
-		}
-
-		if (ob.get("managerphonenumber") != null && !ob.get("managerphonenumber").equals("")) {
-			where.append(" AND managerphonenumber like '%" + ob.get("managerphonenumber") + "%'");
-		}
-		
-		if (ob.get("numberofbasement") != null && !ob.get("numberofbasement").equals("")) {
-			where.append(" AND numberofbasement = " + ob.get("numberofbasement"));
-		}
-		
-		if (ob.get("direction") != null && !ob.get("direction").equals("")) {
-			where.append(" AND direction like '%" + ob.get("direction") + "%'");
-		}
-
-		if (ob.get("staffid") != null) {
-			where.append(" AND assignmentbuilding.staffid = " + ob.get("staffid"));
-		}
-		
-		
-		if (typeCode != null) {
-			sql.append(" left join buildingrenttype on buildingrenttype.buildingid = building.id");
-			sql.append(" left join renttype on renttype.id = buildingrenttype.renttypeid");
-			
-			int i = 0;
-			
-			where.append(" AND ( ");
-			
-			for (String type : typeCode) {
-				if (i == 0) {
-					where.append(" renttype.code like '" + type + "' ");
-				} else {
-					where.append(" OR renttype.code like '" + type + "' ");
+	}
+	
+	public void queryWhereNormal(BuildingSearchBuilder builder, StringBuilder where) {		
+		try {
+			Field[] field = BuildingSearchBuilder.class.getDeclaredFields();
+			for (Field items : field) {
+				items.setAccessible(true);
+				String fieldName = items.getName();
+				if (!fieldName.equals("staffId") && !fieldName.equals("typeCode") 
+						&& !fieldName.startsWith("area") && !fieldName.startsWith("rentPrice")) {
+					Object value = items.get(builder);
+					if (StringUtils.checkString((String)value)) {
+						if (items.getType().getName().equals("java.lang.Long")) {
+							where.append(" AND b." + fieldName.toLowerCase() + " = " + value);
+						} else if (items.getType().getName().equals("java.lang.Integer")) {
+							where.append(" AND b." + fieldName.toLowerCase() + " = " + value);
+						} else if (items.getType().getName().equals("java.lang.String")) {
+							where.append(" AND b." + fieldName.toLowerCase() + " like '%" + value + "%'");
+						}
+					}
 				}
-				i += 1;	
 			}
-			
-			where.append(" ) ");
-
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void queryWhereSpecial(BuildingSearchBuilder builder, StringBuilder where) {
+		Long staffId = builder.getStaffId();
+		if (staffId != null) {
+			where.append(" AND asm.staffId = " + staffId);
 		}
 		
-		String Where = where.toString();
-
-		sql.append(Where);
+		Long rentAreaFrom = builder.getAreaFrom();
+		Long rentAreaTo = builder.getAreaTo();
+		
+		if (rentAreaFrom != null && rentAreaTo != null) {
+			
+			where.append(" AND EXISIS (SELECT * FROM rentarea r WHERE r.buildingid = b.id ");
+			
+			if (rentAreaFrom != null) {
+				where.append(" AND rn.value >= " + rentAreaFrom);
+			}
+			if (rentAreaTo != null) {
+				where.append(" AND rn.value <= " + rentAreaTo);
+			}
+			
+			where.append(")");
+		
+		}
+		
+		List<String> typeCode = builder.getTypeCode();
+		Long rentPriceFrom = builder.getRentPriceFrom();
+		Long rentPriceTo = builder.getRentPriceTo();
+		if (rentPriceFrom != null) {
+			where.append(" AND b.rentprice >= " + rentPriceFrom);
+		}
+		if (rentAreaTo != null) {
+			where.append(" AND b.rentprice <= " + rentPriceTo);
+		}
+		
+		if (typeCode != null && !typeCode.isEmpty()) {
+			where.append(" AND ( ");
+			String sqlJoin = typeCode.stream().map(item -> " rt.code Like '%" + item + "%'")
+					.collect(Collectors.joining(" OR "));
+			where.append(sqlJoin + " ) ");
+		}
+	}
+	
+	public List<BuildingEntity> findAll(BuildingSearchBuilder builder) {
+		StringBuilder sql = new StringBuilder("SELECT * FROM Building b ");
+		
+		queryJoin(builder, sql);
+		StringBuilder where = new StringBuilder(" where 1 = 1 ");
+		queryWhereNormal(builder, where);
+		queryWhereSpecial(builder, where);
+		sql.append(where);
+		sql.append(" Group by b.id ");
 		
 		List<BuildingEntity> result = new ArrayList<BuildingEntity>();
 		
