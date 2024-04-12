@@ -29,7 +29,7 @@ public class RentRepositoryImpl implements RentRepository {
 			
 			while (rs.next()) {
 				RentEntity rent = new RentEntity();
-				rent.setRentArea(rs.getString("value"));
+				rent.setValue(rs.getLong("value"));
 				rentValue.add(rent);
 			}
 			

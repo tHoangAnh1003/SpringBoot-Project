@@ -28,7 +28,7 @@ public class DistrictRepositoryImpl implements DistrictRepository {
 			ResultSet rs = stm.executeQuery(SQL.toString())){
 			
 			while (rs.next()) {
-				district.setDistrict(rs.getString("name"));
+				district.setName(rs.getString("name"));
 			} 
 			
 		} catch (SQLException e) {
