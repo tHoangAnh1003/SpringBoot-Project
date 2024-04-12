@@ -75,7 +75,7 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 		
 		if (rentAreaFrom != null && rentAreaTo != null) {
 			
-			where.append(" AND EXISTS (SELECT * FROM rentarea r WHERE r.buildingid = b.id ");
+			where.append(" AND EXISTS (SELECT * FROM rentarea rn WHERE rn.buildingid = b.id ");
 			
 			if (rentAreaFrom != null) {
 				where.append(" AND rn.value >= " + rentAreaFrom);
@@ -94,7 +94,7 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 		if (rentPriceFrom != null) {
 			where.append(" AND b.rentprice >= " + rentPriceFrom);
 		}
-		if (rentAreaTo != null) {
+		if (rentPriceTo != null) {
 			where.append(" AND b.rentprice <= " + rentPriceTo);
 		}
 		
