@@ -3,6 +3,7 @@ package com.javaweb.DTO;
 public class BuildingDTO {
 	private String name;
 	private String address;
+	private Long districtId;
 	private String managerName;
 	private Long numberOfBasement;
 	private String managerPhoneNumber;
@@ -13,6 +14,13 @@ public class BuildingDTO {
 	private Long vacantArea;
 	private String rentArea;
 	
+	public Long getDistrictId() {
+		return districtId;
+	}
+
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
 
 	public String getRentArea() {
 		return rentArea;

@@ -37,7 +37,7 @@ public class BuildingEntity {
 	@Column(name = "floorarea")
 	private Long floorArea;
 	@Column(name = "rentprice")
-	private String rentPrice;
+	private Long rentPrice;
 	@Column(name = "servicefee")
 	private Long serviceFee;
 	@Column(name = "brokeragefee")
@@ -122,11 +122,11 @@ public class BuildingEntity {
 		return name;
 	}
 
-	public String getRentPrice() {
+	public Long getRentPrice() {
 		return rentPrice;
 	}
 
-	public void setRentPrice(String rentPrice) {
+	public void setRentPrice(Long rentPrice) {
 		this.rentPrice = rentPrice;
 	}
 
