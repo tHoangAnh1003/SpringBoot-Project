@@ -26,8 +26,6 @@ public class BuildingEntity {
 	private String ward;
 	@Column(name = "street")
 	private String street;
-//	@Column(name = "districtId")
-//	private String districtId;
 	@Column(name = "numberofbasement")
 	private Long numberOfBasement;
 	@Column(name = "managername")
@@ -42,10 +40,6 @@ public class BuildingEntity {
 	private Long serviceFee;
 	@Column(name = "brokeragefee")
 	private Long brokerageFee;
-//	@Column(name = "vacantarea")
-//	private Long vacantArea;
-//	@Column(name = "rentarea")
-//	private String rentArea;
 
 	@OneToMany(mappedBy = "building", fetch = FetchType.LAZY)
 	private List<RentEntity> rentAreas = new ArrayList<>();
@@ -77,22 +71,6 @@ public class BuildingEntity {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-//	public String getRentArea() {
-//		return rentArea;
-//	}
-//
-//	public void setRentArea(String rentArea) {
-//		this.rentArea = rentArea;
-//	}
-
-//	public Long getVacantArea() {
-//		return vacantArea;
-//	}
-//
-//	public void setVacantArea(Long vacantArea) {
-//		this.vacantArea = vacantArea;
-//	}
 
 	public Long getFloorArea() {
 		return floorArea;
@@ -149,14 +127,6 @@ public class BuildingEntity {
 	public void setStreet(String street) {
 		this.street = street;
 	}
-
-//	public String getDistrictId() {
-//		return districtId;
-//	}
-//
-//	public void setDistrictId(String districtId) {
-//		this.districtId = districtId;
-//	}
 
 	public Long getNumberOfBasement() {
 		return numberOfBasement;

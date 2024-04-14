@@ -1,4 +1,4 @@
-package com.javaweb.reponsitory.impl;
+package com.javaweb.reponsitory.custom.impl;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -12,12 +12,12 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import com.javaweb.builder.BuildingSearchBuilder;
-import com.javaweb.reponsitory.BuildingRepository;
+import com.javaweb.reponsitory.custom.BuildingRepositoryCustom;
 import com.javaweb.reponsitory.entity.BuildingEntity;
 
 @Repository
 @Primary
-public class BuildingRepositoryImpl implements BuildingRepository {
+public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
 	@PersistenceContext
 	private EntityManager entityManager;
 	
@@ -125,10 +125,10 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 		return query.getResultList();
 	}
 
-	@Override
-	public void delete(Long[] ids) {
-		// TODO Auto-generated method stub
-		
-	}
+//	@Override
+//	public void delete(Long[] ids) {
+//		// TODO Auto-generated method stub
+//		
+//	}
 	
 }

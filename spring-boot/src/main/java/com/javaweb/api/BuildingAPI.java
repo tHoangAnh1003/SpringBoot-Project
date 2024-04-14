@@ -49,18 +49,22 @@ public class BuildingAPI {
 	
 	@PostMapping(value = "/api/building")
 	public void createBuilding(@RequestBody BuildingRequestDTO buildingDTO) {
-		BuildingEntity buildingEntity = molderMapper.map(buildingDTO, BuildingEntity.class);
+//		BuildingEntity buildingEntity = molderMapper.map(buildingDTO, BuildingEntity.class);
+//		
+//		DistrictEntity districtEntity = entityManager.find(DistrictEntity.class, buildingDTO.getDistrictId());
+//		buildingEntity.setDistrict(districtEntity);
+//		
+//		entityManager.merge(buildingEntity);
 		
-		DistrictEntity districtEntity = entityManager.find(DistrictEntity.class, buildingDTO.getDistrictId());
-		buildingEntity.setDistrict(districtEntity);
-		
-		entityManager.merge(buildingEntity);
+		buildingService.createBuilding(buildingDTO);
 	}
 
 	@DeleteMapping(value = "/api/building/{id}")
-	public void deleteBuilding(@PathVariable Long id) {
-		BuildingEntity buildingEntity = entityManager.find(BuildingEntity.class, id);
-		entityManager.remove(buildingEntity);
+	public void deleteBuilding(@PathVariable Long[] ids) {
+//		BuildingEntity buildingEntity = entityManager.find(BuildingEntity.class, id);
+//		entityManager.remove(buildingEntity);
 //		System.out.print("OK");
+		
+		buildingService.delete(ids);
 	}
 }
