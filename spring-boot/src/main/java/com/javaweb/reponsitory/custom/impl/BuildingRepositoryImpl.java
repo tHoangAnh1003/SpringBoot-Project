@@ -75,7 +75,7 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
 		Long rentAreaFrom = builder.getAreaFrom();
 		Long rentAreaTo = builder.getAreaTo();
 		
-		if (rentAreaFrom != null && rentAreaTo != null) {
+		if (rentAreaFrom != null || rentAreaTo != null) {
 			
 			where.append(" AND EXISTS (SELECT * FROM rentarea rn WHERE rn.buildingid = b.id ");
 			
