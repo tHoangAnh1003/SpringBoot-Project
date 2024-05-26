@@ -24,7 +24,7 @@ public class BuildingController {
     @Autowired
     BuildingService buildingService;
 
-    @GetMapping(value = "admin/user-list")
+    @GetMapping(value = "admin/building-list")
     public ModelAndView buildingList(@ModelAttribute("modelSearch") BuildingSearchBuilder buildingSearchBuilder ) {
         ModelAndView mav = new ModelAndView("admin/building/list");
         mav.addObject("staffs", userService.getStaffs());
@@ -50,7 +50,7 @@ public class BuildingController {
     }
 
 
-    @GetMapping(value = "admin/user-edit")
+    @GetMapping(value = "admin/building-edit")
     public ModelAndView addBuilding(@ModelAttribute("buildingEdit")BuildingDTO buildingDTO) {
         ModelAndView mav = new ModelAndView("admin/building/edit");
 
@@ -60,7 +60,7 @@ public class BuildingController {
         return mav;
     }
 
-    @GetMapping(value = "admin/user-edit-{id}")
+    @GetMapping(value = "admin/building-edit-{id}")
     public ModelAndView addBuilding(@PathVariable Long id) {
         ModelAndView mav = new ModelAndView("admin/building/edit");
 
