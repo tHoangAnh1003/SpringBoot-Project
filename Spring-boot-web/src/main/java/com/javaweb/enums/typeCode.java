@@ -20,12 +20,12 @@ public enum typeCode {
     }
 
     public static Map<String, String> getTypeCode() {
-        Map<String, String> listDistrict = new LinkedHashMap<>();
+        Map<String, String> loadTypeCode = new LinkedHashMap<>();
 
-        for (districtCode it : districtCode.values()) {
-            listDistrict.put(it.toString(), it.getDistrictName());
+        for (typeCode it : typeCode.values()) {
+            loadTypeCode.put(it.toString(), it.getTypeCodeName());
         }
 
-        return listDistrict;
+        return loadTypeCode;
     }
 }

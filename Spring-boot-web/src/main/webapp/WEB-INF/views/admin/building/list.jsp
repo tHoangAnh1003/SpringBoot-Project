@@ -78,7 +78,7 @@
                                                     <label for="name">Quận</label>
                                                     <form:select path="district">
                                                         <form:option value="" label="---Chọn Quận---"></form:option>
-                                                        <form:options item="${districtCode}"/>
+                                                        <form:options items="${district}"/>
                                                     </form:select>
                                                 </div>
 
@@ -181,7 +181,7 @@
                         </div>
                     </div>
                     <div class="pull-right">
-                        <a href="">
+                        <a href="/admin/building-edit">
                             <button title="Thêm tòa nhà" class="btn btn-primary">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                      class="bi bi-building-add" viewBox="0 0 16 16">

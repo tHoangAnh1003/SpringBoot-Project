@@ -6,6 +6,7 @@ import com.javaweb.builder.BuildingSearchBuilder;
 import com.javaweb.enums.districtCode;
 import com.javaweb.enums.typeCode;
 import com.javaweb.model.dto.BuildingDTO;
+import com.javaweb.model.request.BuildingSearchRequest;
 import com.javaweb.model.response.BuildingSearchResponse;
 import com.javaweb.service.BuildingService;
 import com.javaweb.service.IUserService;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController(value="buildingControllerOfAdmin")
@@ -24,8 +26,8 @@ public class BuildingController {
     @Autowired
     BuildingService buildingService;
 
-    @GetMapping(value = "admin/building-list")
-    public ModelAndView buildingList(@ModelAttribute("modelSearch") BuildingSearchBuilder buildingSearchBuilder ) {
+    @RequestMapping (value = "admin/building-list", method = RequestMethod.GET)
+    public ModelAndView buildingList(@ModelAttribute("modelSearch")BuildingSearchRequest buildingSearchRequest) {
         ModelAndView mav = new ModelAndView("admin/building/list");
         mav.addObject("staffs", userService.getStaffs());
         mav.addObject("district", districtCode.district());
@@ -33,16 +35,16 @@ public class BuildingController {
 
         // Them tu SQL
 
-        List<BuildingSearchResponse> result = buildingService.searchAll(buildingSearchBuilder);
-//        BuildingSearchResponse buildingSearchResponse = new BuildingSearchResponse();
+        List<BuildingSearchResponse> result = new ArrayList<>();
+        BuildingSearchResponse buildingSearchResponse = new BuildingSearchResponse();
 //
-//        buildingSearchResponse.setId(1L);
-//        buildingSearchResponse.setName("Python Building");
-//        buildingSearchResponse.setAddress("105 Doãn Kế Thiện, Mai Dịch, Cầu Giấy");
-//        buildingSearchResponse.setManagerName("Trần Hoàng Anh");
-//        buildingSearchResponse.setManagerPhone("0337458786");
-//
-//        result.add(buildingSearchResponse);
+        buildingSearchResponse.setId(1L);
+        buildingSearchResponse.setName("Python Building");
+        buildingSearchResponse.setAddress("105 Doãn Kế Thiện, Mai Dịch, Cầu Giấy");
+        buildingSearchResponse.setManagerName("Trần Hoàng Anh");
+        buildingSearchResponse.setManagerPhone("0337458786");
+
+        result.add(buildingSearchResponse);
 
         mav.addObject("buildings", result);
 
