@@ -2,7 +2,6 @@ package com.javaweb.controller.admin;
 
 
 
-import com.javaweb.builder.BuildingSearchBuilder;
 import com.javaweb.enums.districtCode;
 import com.javaweb.enums.typeCode;
 import com.javaweb.model.dto.BuildingDTO;
@@ -26,7 +25,7 @@ public class BuildingController {
     @Autowired
     BuildingService buildingService;
 
-    @RequestMapping (value = "admin/building-list", method = RequestMethod.GET)
+    @RequestMapping (value = "/admin/building-list", method = RequestMethod.GET)
     public ModelAndView buildingList(@ModelAttribute("modelSearch")BuildingSearchRequest buildingSearchRequest) {
         ModelAndView mav = new ModelAndView("admin/building/list");
         mav.addObject("staffs", userService.getStaffs());
@@ -37,7 +36,7 @@ public class BuildingController {
 
         List<BuildingSearchResponse> result = new ArrayList<>();
         BuildingSearchResponse buildingSearchResponse = new BuildingSearchResponse();
-//
+
         buildingSearchResponse.setId(1L);
         buildingSearchResponse.setName("Python Building");
         buildingSearchResponse.setAddress("105 Doãn Kế Thiện, Mai Dịch, Cầu Giấy");
@@ -52,7 +51,7 @@ public class BuildingController {
     }
 
 
-    @GetMapping(value = "admin/building-edit")
+    @GetMapping(value = "/admin/building-edit")
     public ModelAndView addBuilding(@ModelAttribute("buildingEdit")BuildingDTO buildingDTO) {
         ModelAndView mav = new ModelAndView("admin/building/edit");
 
@@ -62,7 +61,7 @@ public class BuildingController {
         return mav;
     }
 
-    @GetMapping(value = "admin/building-edit-{id}")
+    @GetMapping(value = "/admin/building-edit-{id}")
     public ModelAndView addBuilding(@PathVariable Long id) {
         ModelAndView mav = new ModelAndView("admin/building/edit");
 
@@ -71,16 +70,16 @@ public class BuildingController {
 
         // findBuilding them tu SQL
 
-        BuildingDTO buildingDTO = buildingService.findBuildingById(id);
-//        buildingDTO.setId(id);
-//        buildingDTO.setName("Python Building");
-//        buildingDTO.setDistrict("QUAN_11");
-//        buildingDTO.setWard("Phường Mai Dịch");
-//        buildingDTO.setStreet("Doãn Kế Thiện");
-//        buildingDTO.setNumberOfBasement(3L);
-//        List<String> tCode = new ArrayList<>();
-//        tCode.add("NGUYEN_CAN");
-//        buildingDTO.setTypeCode(tCode);
+        BuildingDTO buildingDTO = new BuildingDTO();
+        buildingDTO.setId(id);
+        buildingDTO.setName("Python Building");
+        buildingDTO.setDistrict("QUAN_11");
+        buildingDTO.setWard("Phường Mai Dịch");
+        buildingDTO.setStreet("Doãn Kế Thiện");
+        buildingDTO.setNumberOfBasement(3L);
+        List<String> tCode = new ArrayList<>();
+        tCode.add("NGUYEN_CAN");
+        buildingDTO.setTypeCode(tCode);
 
         mav.addObject("buildingEdit", buildingDTO);
 

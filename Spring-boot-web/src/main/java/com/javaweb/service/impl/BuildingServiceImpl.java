@@ -54,7 +54,7 @@ public class BuildingServiceImpl implements BuildingService {
     public List<BuildingSearchResponse> searchAll(BuildingSearchBuilder buildingSearchBuilder) {
 //        BuildingSearchBuilder buildingSearchBuilder = buildingSearchBuilderConverter.toBuildingSearchBuilder(ob, typeCode);
 
-        List<BuildingEntity> buildEntities = buildingRepository.findAll(    buildingSearchBuilder);
+        List<BuildingEntity> buildEntities = buildingRepository.findAll(buildingSearchBuilder);
 
 //		List<BuildingEntity> buildEntities = buildingRepository.findAll();
 

@@ -1,6 +1,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@include file="/common/taglib.jsp" %>
 <c:url var="buildingEditURL" value="/admin/building-edit"></c:url>
+<%--<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>--%>
 <%--
   Created by IntelliJ IDEA.
   User: 84337
@@ -54,28 +55,28 @@
             </div><!-- /.page-header -->
 
             <div class="row" style="font-family: 'Times New Roman', Times, serif;">
-                <form:form modelAttribute="buildingEdit" action="${buildingEditURL}" method="GET">
+                <form:form modelAttribute="buildingEdit" action="${buildingEditURL}" method="get">
                     <div class="col-xs-12">
                         <form class="form-horizontal" id="form-edit">
                             <div class="form-group">
                                 <label class="col-xs-3">Tên tòa nhà</label>
                                 <div class="col-xs-9">
-                                    <form:input path="name" class="form-control"></form:input>
+                                    <form:input path="name" class="form-control"/>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-xs-3">Quận</label>
                                 <div class="col-xs-4">
                                     <form:select path="district">
-                                        <form:option value="" label="---Chọn Quận---"></form:option>
-                                        <form:options item="${district}"/>
+                                        <form:option value="" label="---Chọn Quận---"/>
+                                        <form:options items="${district}"/>
                                     </form:select>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-xs-3">Phường</label>
                                 <div class="col-xs-9">
-                                    <form:input path="ward" class="form-control"></form:input>
+                                    <form:input path="ward" class="form-control"/>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -243,7 +244,7 @@
         var formData = $('#form-edit').serializeArray()
         $.each(formData, function (i, it) {
             if (it.name != 'typeCode') {
-                data["" + it.name + ""] = it.value
+                data[" " + it.name + " "] = it.value
             } else {
                 typeCode.push(it.value)
             }
