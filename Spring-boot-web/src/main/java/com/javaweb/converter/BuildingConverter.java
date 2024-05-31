@@ -3,6 +3,7 @@ package com.javaweb.converter;
 import java.util.stream.Collectors;
 
 import com.javaweb.entity.BuildingEntity;
+import com.javaweb.enums.districtCode;
 import com.javaweb.model.dto.BuildingDTO;
 import com.javaweb.model.response.BuildingSearchResponse;
 import org.modelmapper.ModelMapper;
@@ -30,7 +31,9 @@ public class BuildingConverter {
     public BuildingSearchResponse toBuildingReponse(BuildingEntity item) {
         BuildingSearchResponse buildingSearchResponse = molderMapper.map(item, BuildingSearchResponse.class);
 
-        buildingSearchResponse.setAddress(item.getStreet() + ", " + item.getWard() + ", " + item.getDistrict());
+        districtCode districtEnum = districtCode.fromString(item.getDistrict());
+
+        buildingSearchResponse.setAddress(item.getStreet() + ", " + item.getWard() + ", " + districtEnum.getDistrictName());
 
         return buildingSearchResponse;
     }

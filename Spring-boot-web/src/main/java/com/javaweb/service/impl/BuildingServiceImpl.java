@@ -51,27 +51,6 @@ public class BuildingServiceImpl implements BuildingService {
         return result;
     }
 
-    public List<BuildingSearchResponse> searchAll(BuildingSearchBuilder buildingSearchBuilder) {
-//        BuildingSearchBuilder buildingSearchBuilder = buildingSearchBuilderConverter.toBuildingSearchBuilder(ob, typeCode);
-
-        List<BuildingEntity> buildEntities = buildingRepository.findAll(buildingSearchBuilder);
-
-//		List<BuildingEntity> buildEntities = buildingRepository.findAll();
-
-//		List<BuildingEntity> buildEntities = buildingRepository.findByNameContainingAndWardContaining(buildingSearchBuilder.getName(), "Phuong 7");
-
-//		BuildingEntity buildEntity = buildingRepository.findById(1L).get();
-
-        List<BuildingSearchResponse> result = new ArrayList<>();
-
-        for (BuildingEntity item : buildEntities) {
-            BuildingSearchResponse building = buildingConverter.toBuildingReponse(item);
-            result.add(building);
-        }
-
-        return result;
-    }
-
     @Override
     public void addOrUpdateBuilding(BuildingDTO buildingDTO) {
         BuildingEntity buildingEntity = molderMapper.map(buildingDTO, BuildingEntity.class);

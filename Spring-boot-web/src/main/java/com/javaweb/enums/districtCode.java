@@ -30,4 +30,13 @@ public enum districtCode {
 
         return listDistrict;
     }
+
+    public static districtCode fromString(String districtName) {
+        for (districtCode district : districtCode.values()) {
+            if (district.districtName.equalsIgnoreCase(districtName)) {
+                return district;
+            }
+        }
+        return null;
+    }
 }

@@ -10,7 +10,6 @@ import java.util.Map;
 public interface BuildingService {
     List<BuildingSearchResponse> findAll(Map<String, Object> ob, List<String> typeCode);
 
-    List<BuildingSearchResponse> searchAll(BuildingSearchBuilder buildingSearchBuilder);
 
     void addOrUpdateBuilding(BuildingDTO buildingDTO);
 
