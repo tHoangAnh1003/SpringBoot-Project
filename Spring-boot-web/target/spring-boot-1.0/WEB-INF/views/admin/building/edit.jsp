@@ -244,7 +244,7 @@
         var formData = $('#form-edit').serializeArray()
         $.each(formData, function (i, it) {
             if (it.name != 'typeCode') {
-                data["" + it.name + ""] = it.value
+                data[" " + it.name + " "] = it.value
             } else {
                 typeCode.push(it.value)
             }

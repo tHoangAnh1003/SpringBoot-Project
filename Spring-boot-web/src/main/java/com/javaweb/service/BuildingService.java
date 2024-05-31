@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface BuildingService {
-    List<BuildingDTO> findAll(Map<String, Object> ob, List<String> typeCode);
+    List<BuildingSearchResponse> findAll(Map<String, Object> ob, List<String> typeCode);
 
     List<BuildingSearchResponse> searchAll(BuildingSearchBuilder buildingSearchBuilder);
 

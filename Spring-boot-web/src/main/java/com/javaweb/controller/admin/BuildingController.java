@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController(value="buildingControllerOfAdmin")
 public class BuildingController {
@@ -34,16 +36,38 @@ public class BuildingController {
 
         // Them tu SQL
 
-        List<BuildingSearchResponse> result = new ArrayList<>();
-        BuildingSearchResponse buildingSearchResponse = new BuildingSearchResponse();
+//        List<BuildingSearchResponse> result = new ArrayList<>();
+//        BuildingSearchResponse buildingSearchResponse = new BuildingSearchResponse();
+//
+//        buildingSearchResponse.setId(1L);
+//        buildingSearchResponse.setName("Python Building");
+//        buildingSearchResponse.setAddress("105 Doãn Kế Thiện, Mai Dịch, Cầu Giấy");
+//        buildingSearchResponse.setManagerName("Trần Hoàng Anh");
+//        buildingSearchResponse.setManagerPhone("0337458786");
+//
+//        result.add(buildingSearchResponse);
 
-        buildingSearchResponse.setId(1L);
-        buildingSearchResponse.setName("Python Building");
-        buildingSearchResponse.setAddress("105 Doãn Kế Thiện, Mai Dịch, Cầu Giấy");
-        buildingSearchResponse.setManagerName("Trần Hoàng Anh");
-        buildingSearchResponse.setManagerPhone("0337458786");
+//        mav.addObject("buildings", result);
 
-        result.add(buildingSearchResponse);
+        Map<String, Object> ob = new HashMap<>();
+        ob.put("name", buildingSearchRequest.getName());
+        ob.put("district", buildingSearchRequest.getDistrict());
+        ob.put("ward", buildingSearchRequest.getWard());
+        ob.put("street", buildingSearchRequest.getStreet());
+        ob.put("numberOfBasement", buildingSearchRequest.getNumberOfBasement());
+        ob.put("direction", buildingSearchRequest.getDirection());
+        ob.put("level", buildingSearchRequest.getLevel());
+        ob.put("areaFrom", buildingSearchRequest.getAreaFrom());
+        ob.put("areaTo", buildingSearchRequest.getAreaTo());
+        ob.put("rentPriceFrom", buildingSearchRequest.getRentPriceFrom());
+        ob.put("rentPriceTo", buildingSearchRequest.getRentPriceTo());
+        ob.put("managerName", buildingSearchRequest.getManagerName());
+        ob.put("managerPhone", buildingSearchRequest.getManagerPhone());
+        ob.put("staffId", buildingSearchRequest.getStaffId());
+
+        List<String> typeCode = buildingSearchRequest.getTypeCode();
+
+        List<BuildingSearchResponse> result = buildingService.findAll(ob, typeCode);
 
         mav.addObject("buildings", result);
 

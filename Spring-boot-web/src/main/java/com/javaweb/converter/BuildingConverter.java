@@ -30,6 +30,8 @@ public class BuildingConverter {
     public BuildingSearchResponse toBuildingReponse(BuildingEntity item) {
         BuildingSearchResponse buildingSearchResponse = molderMapper.map(item, BuildingSearchResponse.class);
 
+        buildingSearchResponse.setAddress(item.getStreet() + ", " + item.getWard() + ", " + item.getDistrict());
+
         return buildingSearchResponse;
     }
 }

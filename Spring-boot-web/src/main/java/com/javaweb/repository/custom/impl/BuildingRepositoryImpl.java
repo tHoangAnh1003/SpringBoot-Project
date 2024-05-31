@@ -109,8 +109,8 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
     }
 
     public List<BuildingEntity> findAll(BuildingSearchBuilder builder) {
-        StringBuilder jpql = new StringBuilder("SELECT b.id, b.name, b.districtid, b.street, b.ward, "
-                + "b.numberofbasement, b.managername, b.managerphonenumber, "
+        StringBuilder jpql = new StringBuilder("SELECT b.id, b.name, b.street, b.ward, "
+                + "b.numberofbasement, b.district, b.managername, b.managerphone, "
                 + "b.floorarea, b.rentprice, b.brokeragefee, b.servicefee FROM Building b ");
 
         queryJoin(builder, jpql);

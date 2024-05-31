@@ -16,6 +16,8 @@ public class BuildingEntity {
     private Long id;
     @Column(name = "name")
     private String name;
+    @Column(name="district")
+    private String district;
     @Column(name = "ward")
     private String ward;
     @Column(name = "street")
@@ -24,7 +26,7 @@ public class BuildingEntity {
     private Long numberOfBasement;
     @Column(name = "managername")
     private String managerName;
-    @Column(name = "managerphonenumber")
+    @Column(name = "managerphone")
     private String managerPhoneNumber;
     @Column(name = "floorarea")
     private Long floorArea;
@@ -123,5 +125,12 @@ public class BuildingEntity {
         this.managerPhoneNumber = managerPhoneNumber;
     }
 
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
 
 }

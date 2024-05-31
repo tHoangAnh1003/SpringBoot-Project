@@ -30,7 +30,7 @@ public class BuildingServiceImpl implements BuildingService {
     private BuildingSearchBuilderConverter buildingSearchBuilderConverter;
 
     @Override
-    public List<BuildingDTO> findAll(Map<String, Object> ob, List<String> typeCode) {
+    public List<BuildingSearchResponse> findAll(Map<String, Object> ob, List<String> typeCode) {
         BuildingSearchBuilder buildingSearchBuilder = buildingSearchBuilderConverter.toBuildingSearchBuilder(ob, typeCode);
 
         List<BuildingEntity> buildEntities = buildingRepository.findAll(buildingSearchBuilder);
@@ -41,10 +41,10 @@ public class BuildingServiceImpl implements BuildingService {
 
 //		BuildingEntity buildEntity = buildingRepository.findById(1L).get();
 
-        List<BuildingDTO> result = new ArrayList<>();
+        List<BuildingSearchResponse> result = new ArrayList<>();
 
         for (BuildingEntity item : buildEntities) {
-            BuildingDTO building = buildingConverter.toBuildingDTO(item);
+            BuildingSearchResponse building = buildingConverter.toBuildingReponse(item);
             result.add(building);
         }
 
