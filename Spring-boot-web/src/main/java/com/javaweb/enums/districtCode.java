@@ -37,6 +37,6 @@ public enum districtCode {
                 return district;
             }
         }
-        return null;
+        return QUAN_1;
     }
 }
