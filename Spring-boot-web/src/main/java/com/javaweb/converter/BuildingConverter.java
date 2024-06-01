@@ -1,8 +1,11 @@
 package com.javaweb.converter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import com.javaweb.entity.BuildingEntity;
+import com.javaweb.entity.RentEntity;
 import com.javaweb.enums.districtCode;
 import com.javaweb.model.dto.BuildingDTO;
 import com.javaweb.model.response.BuildingSearchResponse;
@@ -18,22 +21,31 @@ public class BuildingConverter {
     private ModelMapper molderMapper;
 
     public BuildingDTO toBuildingDTO(BuildingEntity item) {
-        BuildingDTO building = molderMapper.map(item, BuildingDTO.class);
+        BuildingDTO buildingDTO = molderMapper.map(item, BuildingDTO.class);
 
-//        building.setAddress(item.getStreet() + ", " + item.getWard() + ", " + item.getDistrict().getName());
-//
-//
-//        String rentAreas = item.getRentAreas().stream().map(it -> it.getValue().toString()).collect(Collectors.joining(", "));
-//        building.setRentArea(rentAreas);
-        return building;
+        String[] typeCodes = item.getTypeCode().split(",");
+
+        List<String> typeCode = new ArrayList<>();
+        for(String it : typeCodes){
+            typeCode.add(it);
+        }
+        buildingDTO.setTypeCode(typeCode);
+
+        List<RentEntity> rentAreaEntities = item.getRentEntities();
+        String areaResult = rentAreaEntities.stream().map(items -> items.getValue()).collect(Collectors.joining(","));
+        buildingDTO.setRentArea(areaResult);
+
+        return buildingDTO;
     }
 
     public BuildingSearchResponse toBuildingReponse(BuildingEntity item) {
         BuildingSearchResponse buildingSearchResponse = molderMapper.map(item, BuildingSearchResponse.class);
 
-        districtCode districtEnum = districtCode.fromString(item.getDistrict());
+        if (item.getDistrict() != null) {
+            districtCode districtEnum = districtCode.fromString(item.getDistrict());
 
-        buildingSearchResponse.setAddress(item.getStreet() + ", " + item.getWard() + ", " + districtEnum.getDistrictName());
+            buildingSearchResponse.setAddress(item.getStreet() + ", " + item.getWard() + ", " + districtEnum.getDistrictName());
+        }
 
         return buildingSearchResponse;
     }

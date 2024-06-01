@@ -1,37 +1,39 @@
 package com.javaweb.service.impl;
 
+import com.javaweb.entity.AssignmentBuildingEntity;
 import com.javaweb.entity.BuildingEntity;
-import com.javaweb.entity.StaffEntity;
+import com.javaweb.entity.UserEntity;
 import com.javaweb.model.dto.AssignmentBuildingDTO;
-import com.javaweb.repository.BuildingRepository;
-import com.javaweb.repository.StaffRepository;
+import com.javaweb.repository.AssignmentBuildingRepository;
 import com.javaweb.service.AssignmentBuildingService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class AssignmentBuildingServiceImpl implements AssignmentBuildingService {
-    @Autowired
-    private BuildingRepository buildingRepository;
 
     @Autowired
-    private StaffRepository staffRepository;
+    private AssignmentBuildingRepository assignmentBuildingRepository;
+    @Override
+    public void createAssignmentBuilding(AssignmentBuildingDTO assignmentBuildingDTO) {
+        List<AssignmentBuildingEntity> assignBuildingEntities = new ArrayList<>();
+        for(Long it : assignmentBuildingDTO.getStaffs()){
+            AssignmentBuildingEntity assignBuilding = new AssignmentBuildingEntity();
+            UserEntity userEntity = new UserEntity();
+            BuildingEntity buildingEntity = new BuildingEntity();
+            userEntity.setId(it);
+            buildingEntity.setId(assignmentBuildingDTO.getBuildingId());
+            assignBuilding.setUserEntity(userEntity);
+            assignBuilding.setBuildingEntity(buildingEntity);
+            assignBuildingEntities.add(assignBuilding);
+        }
+        for(AssignmentBuildingEntity it : assignBuildingEntities){
+            assignmentBuildingRepository.save(it);
+        }
 
-    @Autowired
-    private ModelMapper molderMapper;
-
-    public void updateAssignment(AssignmentBuildingDTO assignmentBuildingDTO) {
-//        Long id = assignmentBuildingDTO.getBuildingId();
-//        List<Long> staffIds = assignmentBuildingDTO.getStaffs();
-//
-        StaffEntity staffEntity = molderMapper.map(assignmentBuildingDTO, StaffEntity.class);
-
-        staffRepository.save(staffEntity);
-
-//        buildingRepository.save(building);
     }
 
 }

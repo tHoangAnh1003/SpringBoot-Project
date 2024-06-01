@@ -8,12 +8,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import com.javaweb.builder.BuildingSearchBuilder;
 import com.javaweb.entity.BuildingEntity;
+import com.javaweb.model.request.BuildingSearchRequest;
 import com.javaweb.repository.custom.BuildingRepositoryCustom;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
-
 
 @Repository
 @Primary
@@ -21,7 +20,7 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public void queryJoin(BuildingSearchBuilder builder, StringBuilder sql) {
+    public void queryJoin(BuildingSearchRequest builder, StringBuilder sql) {
         Long rentAreaFrom = builder.getRentPriceFrom();
         Long rentAreaTo = builder.getRentPriceTo();
         if (rentAreaFrom != null || rentAreaTo != null) {
@@ -33,17 +32,11 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
         if (staffId != null) {
             sql.append(" JOIN assignmentbuilding asm ON asm.buildingid = b.id ");
         }
-
-        List<String> typeCode = builder.getTypeCode();
-        if (typeCode != null && !typeCode.isEmpty()) {
-            sql.append(" JOIN buildingrenttype bdt ON bdt.buildingid = b.id");
-            sql.append(" JOIN renttype rt ON rt.id = bdt.renttypeid");
-        }
     }
 
-    public void queryWhereNormal(BuildingSearchBuilder builder, StringBuilder where) {
+    public void queryWhereNormal(BuildingSearchRequest builder, StringBuilder where) {
         try {
-            Field[] field = BuildingSearchBuilder.class.getDeclaredFields();
+            Field[] field = BuildingSearchRequest.class.getDeclaredFields();
             for (Field items : field) {
                 items.setAccessible(true);
                 String fieldName = items.getName();
@@ -55,7 +48,7 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
                             where.append(" AND b." + fieldName.toLowerCase() + " = " + value);
                         } else if (items.getType().getName().equals("java.lang.Integer")) {
                             where.append(" AND b." + fieldName.toLowerCase() + " = " + value);
-                        } else if (items.getType().getName().equals("java.lang.String")) {
+                        } else if (items.getType().getName().equals("java.lang.String") && value != "") {
                             where.append(" AND b." + fieldName.toLowerCase() + " LIKE '%" + value + "%'");
                         }
                     }
@@ -66,7 +59,7 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
         }
     }
 
-    public void queryWhereSpecial(BuildingSearchBuilder builder, StringBuilder where) {
+    public void queryWhereSpecial(BuildingSearchRequest builder, StringBuilder where) {
         Long staffId = builder.getStaffId();
         if (staffId != null) {
             where.append(" AND asm.staffId = " + staffId);
@@ -90,7 +83,6 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
 
         }
 
-        List<String> typeCode = builder.getTypeCode();
         Long rentPriceFrom = builder.getRentPriceFrom();
         Long rentPriceTo = builder.getRentPriceTo();
         if (rentPriceFrom != null) {
@@ -100,18 +92,16 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
             where.append(" AND b.rentprice <= " + rentPriceTo);
         }
 
-        if (typeCode != null && !typeCode.isEmpty()) {
-            where.append(" AND ( ");
-            String sqlJoin = typeCode.stream().map(item -> " rt.code LIKE '%" + item + "%'")
-                    .collect(Collectors.joining(" OR "));
-            where.append(sqlJoin + " ) ");
+        List<String> typeCode = builder.getTypeCode();
+        if (typeCode != null) {
+            for (String type : typeCode) {
+                where.append("AND b.type LIKE '%" + type + "%' ");
+            }
         }
     }
 
-    public List<BuildingEntity> findAll(BuildingSearchBuilder builder) {
-        StringBuilder jpql = new StringBuilder("SELECT b.id, b.name, b.street, b.ward, "
-                + "b.numberofbasement, b.district, b.managername, b.managerphone, "
-                + "b.floorarea, b.rentprice, b.brokeragefee, b.servicefee FROM Building b ");
+    public List<BuildingEntity> findAll(BuildingSearchRequest builder) {
+        StringBuilder jpql = new StringBuilder("SELECT b.* FROM building b ");
 
         queryJoin(builder, jpql);
         StringBuilder where = new StringBuilder(" WHERE 1 = 1 ");
@@ -124,11 +114,4 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
 
         return query.getResultList();
     }
-
-//	@Override
-//	public void delete(Long[] ids) {
-//		// TODO Auto-generated method stub
-//		
-//	}
-
 }

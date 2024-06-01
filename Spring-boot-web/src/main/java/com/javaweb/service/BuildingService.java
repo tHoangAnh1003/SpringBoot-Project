@@ -1,19 +1,20 @@
 package com.javaweb.service;
 
-import com.javaweb.builder.BuildingSearchBuilder;
+import com.javaweb.entity.BuildingEntity;
 import com.javaweb.model.dto.BuildingDTO;
+import com.javaweb.model.request.BuildingSearchRequest;
 import com.javaweb.model.response.BuildingSearchResponse;
+import com.javaweb.model.response.ResponseDTO;
 
 import java.util.List;
-import java.util.Map;
 
 public interface BuildingService {
-    List<BuildingSearchResponse> findAll(Map<String, Object> ob, List<String> typeCode);
 
+    ResponseDTO listStaffs(Long buildingId);
 
-    void addOrUpdateBuilding(BuildingDTO buildingDTO);
+    List<BuildingSearchResponse> findAll(BuildingSearchRequest buildingSearchRequest);
 
-    void delete(List<Long> ids);
+    void createAndUpdateBuilding(BuildingDTO buildingDTO);
 
-    BuildingDTO findBuildingById(Long id);
+    BuildingDTO toBuildingDTO(BuildingEntity buildingEntity);
 }

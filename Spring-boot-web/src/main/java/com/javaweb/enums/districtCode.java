@@ -7,6 +7,7 @@ public enum districtCode {
     QUAN_1("Quận 1"),
     QUAN_2("Quận 2"),
     QUAN_3("Quận 3"),
+    QUAN_4("Quận 4"),
     QUAN_TB("Quận Tân Bình"),
     QUAN_10("Quận 10"),
     QUAN_11("Quận 11");
@@ -32,11 +33,6 @@ public enum districtCode {
     }
 
     public static districtCode fromString(String districtName) {
-        for (districtCode district : districtCode.values()) {
-            if (district.districtName.equalsIgnoreCase(districtName)) {
-                return district;
-            }
-        }
-        return QUAN_1;
+        return districtCode.valueOf(districtName);
     }
 }
