@@ -351,7 +351,7 @@
         }
     })
 
-    function assignment(data) {
+    function assignment (data) {
         $.ajax({
             type: "POST",
             url: "${buildingAPI}/assignment",
@@ -379,7 +379,7 @@
         var buildingId = [data];
         deleteBuildings(buildingId);
         alert("Xóa tòa nhà thành công!");
-        window.location.replace("/admin/building-list");
+        window.location.href = "/admin/building-list";
     }
 
     $('#btnDeleteBuilding').click(function (e) {
@@ -389,7 +389,7 @@
         }).get();
         deleteBuildings(buildingIds);
         alert("Xóa tòa nhà thành công!");
-        window.location.replace("/admin/building-list");
+        window.location.href = "/admin/building-list";
     })
 
     function deleteBuildings(data) {
@@ -401,11 +401,10 @@
             dataType: "JSON",
             success: function (respond) {
                 console.log("Success");
-                alert(respond)
             },
             error: function (respond) {
                 console.log("Failed");
-                alert(respond);
+                console.log(respond);
             }
         });
     }

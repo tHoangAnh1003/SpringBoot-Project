@@ -9,10 +9,12 @@ import com.javaweb.repository.RentRepository;
 import com.javaweb.service.AssignmentBuildingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.javaweb.service.BuildingService;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/buildings")
+@Transactional
 public class BuildingAPI {
 
     @Autowired

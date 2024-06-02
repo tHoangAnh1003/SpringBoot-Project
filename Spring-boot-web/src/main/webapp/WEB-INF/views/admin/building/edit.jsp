@@ -214,7 +214,6 @@
                             </form>
                         </div>
                     </form:form>
-
                 </div>
             </div><!-- /.page-content -->
         </div>
@@ -222,21 +221,31 @@
 </div><!-- /.main-container -->
 
 <script>
+
     $('#btnAddOrUpdateBuilding').click(function () {
-        var data = {}
-        var typeCode = []
-        var formData = $('#form-edit').serializeArray()
-        $.each(formData, function (i, it) {
-            if (it.name != 'typeCode')
-                data[" " + it.name + " "] = it.value
+        var data = {};
+        var typeCode = [];
+        var formData = $('#listForm').serializeArray();
+
+        $.each(formData, function (item, value) {
+            if (value.name != 'typeCode')
+                data["" + value.name + ""] = value.value;
             else
-                typeCode.push(it.value)
+                typeCode.push(value.value);
         })
-        data['typeCode'] = typeCode
-        if (typeCode.length == 0)
-            return alert("Loại tòa nhà không được thiếu")
-        else
-            btnAddOrUpdate(data)
+        data['typeCode'] = typeCode;
+        if (typeCode != '' && data['district'] != '') {
+            btnAddOrUpdate(data);
+            if (data['id'] != '')
+                alert("Cập nhật thành công!");
+            else
+                alert("Thêm mới thành công!");
+        } else {
+            if (data['id'] != '')
+                alert("Lỗi cập nhật tòa nhà!");
+            else
+                alert("Lỗi thêm tòa nhà!");
+        }
     })
 
     function btnAddOrUpdate(data) {
@@ -248,7 +257,6 @@
             dataType: "text",
             success: (respone) => {
                 console.log("Apply Success")
-                alert(respone)
                 window.location.replace("/admin/building-list")
             },
             error: function (respone) {
