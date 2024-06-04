@@ -214,7 +214,6 @@
                             </form>
                         </div>
                     </form:form>
-
                 </div>
             </div><!-- /.page-content -->
         </div>
@@ -222,36 +221,30 @@
 </div><!-- /.main-container -->
 
 <script>
+
     $('#btnAddOrUpdateBuilding').click(function () {
         var data = {};
         var typeCode = [];
         var formData = $('#listForm').serializeArray();
 
         $.each(formData, function (item, value) {
-            if (value.name != 'typeCode') {
+            if (value.name != 'typeCode')
                 data["" + value.name + ""] = value.value;
-            } else {
+            else
                 typeCode.push(value.value);
-            }
         })
         data['typeCode'] = typeCode;
         if (typeCode != '' && data['district'] != '') {
             btnAddOrUpdate(data);
-            if (data['id'] != '') {
+            if (data['id'] != '')
                 alert("Cập nhật thành công!");
-                // window.location.replace("/admin/building-list?message=success");
-            } else {
+            else
                 alert("Thêm mới thành công!");
-                // window.location.replace("/admin/building-list?message=success");
-            }
         } else {
-            if (data['id'] != '') {
+            if (data['id'] != '')
                 alert("Lỗi cập nhật tòa nhà!");
-                // window.location.replace("/admin/building-edit-" + data['id'] + "?typeCode=required&district=required");
-            } else {
+            else
                 alert("Lỗi thêm tòa nhà!");
-                <%--window.location.replace("<c:url value="/admin/building-edit?typeCode=required&district=required"/>");--%>
-            }
         }
     })
 
@@ -264,7 +257,6 @@
             dataType: "text",
             success: (respone) => {
                 console.log("Apply Success")
-                alert(respone)
                 window.location.replace("/admin/building-list")
             },
             error: function (respone) {

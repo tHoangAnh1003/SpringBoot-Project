@@ -17,4 +17,6 @@ public interface BuildingService {
     void createAndUpdateBuilding(BuildingDTO buildingDTO);
 
     BuildingDTO toBuildingDTO(BuildingEntity buildingEntity);
+
+    void deleteBuilding(Long[] ids);
 }

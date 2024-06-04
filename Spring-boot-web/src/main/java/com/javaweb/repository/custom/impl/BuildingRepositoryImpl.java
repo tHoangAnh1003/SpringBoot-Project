@@ -95,7 +95,7 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
         List<String> typeCode = builder.getTypeCode();
         if (typeCode != null) {
             for (String type : typeCode) {
-                where.append("OR b.type LIKE '%" + type + "%' ");
+                where.append(" OR b.type LIKE '%" + type + "%' ");
             }
         }
     }

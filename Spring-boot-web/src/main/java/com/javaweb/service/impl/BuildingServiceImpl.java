@@ -12,6 +12,7 @@ import com.javaweb.model.request.BuildingSearchRequest;
 import com.javaweb.model.response.BuildingSearchResponse;
 import com.javaweb.model.response.ResponseDTO;
 import com.javaweb.model.response.StaffResponseDTO;
+import com.javaweb.repository.AssignmentBuildingRepository;
 import com.javaweb.repository.BuildingRepository;
 import com.javaweb.repository.RentRepository;
 import com.javaweb.repository.UserRepository;
@@ -40,6 +41,8 @@ public class BuildingServiceImpl implements BuildingService {
     private BuildingConverter buildingConverter;
     @Autowired
     private RentRepository rentRepository;
+    @Autowired
+    private AssignmentBuildingRepository assignmentBuildingRepository;
     @Override
     public List<BuildingSearchResponse> findAll(BuildingSearchRequest buildingSearchRequest) {
         List<BuildingEntity> buildings = buildingRepository.findAll(buildingSearchRequest);
@@ -96,5 +99,13 @@ public class BuildingServiceImpl implements BuildingService {
         BuildingDTO buildingDTO = buildingConverter.toBuildingDTO(buildingEntity);
         return buildingDTO;
     }
+
+    @Override
+    public void deleteBuilding(Long[] ids) {
+        rentRepository.deleteByBuildingEntityIdIn(ids);
+        assignmentBuildingRepository.deleteByBuildingEntityIdIn(ids);
+        buildingRepository.deleteByIdIn(ids);
+    }
+
 
 }

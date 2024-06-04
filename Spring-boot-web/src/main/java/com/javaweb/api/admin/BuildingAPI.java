@@ -20,10 +20,6 @@ public class BuildingAPI {
     @Autowired
     private BuildingService buildingService;
     @Autowired
-    private BuildingRepository buildingRepository;
-    @Autowired
-    private RentRepository rentRepository;
-    @Autowired
     private AssignmentBuildingRepository assignmentBuildingRepository;
     @Autowired
     private AssignmentBuildingService assignmentBuildingService;
@@ -36,11 +32,7 @@ public class BuildingAPI {
 
     @DeleteMapping("/{ids}")
     public String deleteBuilding(@PathVariable Long[] ids) {
-
-        rentRepository.deleteByBuildingEntityIdIn(ids);
-        assignmentBuildingRepository.deleteByBuildingEntityIdIn(ids);
-        buildingRepository.deleteByIdIn(ids);
-
+        buildingService.deleteBuilding(ids);
         return "Delete Building";
     }
 
