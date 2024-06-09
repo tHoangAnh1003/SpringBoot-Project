@@ -4,8 +4,6 @@ import com.javaweb.model.dto.AssignmentBuildingDTO;
 import com.javaweb.model.dto.BuildingDTO;
 import com.javaweb.model.response.ResponseDTO;
 import com.javaweb.repository.AssignmentBuildingRepository;
-import com.javaweb.repository.BuildingRepository;
-import com.javaweb.repository.RentRepository;
 import com.javaweb.service.AssignmentBuildingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.javaweb.service.BuildingService;

@@ -17,6 +17,10 @@ public class BuildingEntity extends BaseEntity {
     private String ward;
     @Column(name = "street")
     private String street;
+    @Column(name = "level")
+    private String level;
+    @Column(name = "direction")
+    private String direction;
     @Column(name = "numberofbasement")
     private Long numberOfBasement;
     @Column(name = "managername")
@@ -261,5 +265,26 @@ public class BuildingEntity extends BaseEntity {
     public void setAssignmentBuildingEntities(List<AssignmentBuildingEntity> assignmentBuildingEntities) {
         this.assignmentBuildingEntities = assignmentBuildingEntities;
     }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
+    public String getDirection() {
+        return direction;
+    }
+
+    public void setDirection(String direction) {
+        this.direction = direction;
+    }
+
+    public List<AssignmentBuildingEntity> getAssignmentBuildingEntities() {
+        return assignmentBuildingEntities;
+    }
+
 
 }
