@@ -26,7 +26,7 @@ public class BuildingEntity extends BaseEntity {
     @Column(name = "managername")
     private String managerName;
     @Column(name = "managerphone")
-    private String managerPhoneNumber;
+    private String managerPhone;
     @Column(name = "floorarea")
     private Long floorArea;
     @Column(name = "rentprice")
@@ -132,12 +132,12 @@ public class BuildingEntity extends BaseEntity {
         this.managerName = managerName;
     }
 
-    public String getManagerPhoneNumber() {
-        return managerPhoneNumber;
+    public String getManagerPhone() {
+        return managerPhone;
     }
 
-    public void setManagerPhoneNumber(String managerPhoneNumber) {
-        this.managerPhoneNumber = managerPhoneNumber;
+    public void setManagerPhone(String managerPhone) {
+        this.managerPhone = managerPhone;
     }
 
     public String getDistrict() {

@@ -93,12 +93,6 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
         }
 
         List<String> typeCode = builder.getTypeCode();
-//        if (typeCode != null) {
-//            for (String type : typeCode) {
-//                where.append(" OR b.type LIKE '%" + type + "%' ");
-//            }
-//        }
-
         if (typeCode != null && !typeCode.isEmpty()) {
             where.append(" AND ( ");
             String sqlJoin = typeCode.stream().map(item -> " b.type LIKE '%" + item + "%'")
